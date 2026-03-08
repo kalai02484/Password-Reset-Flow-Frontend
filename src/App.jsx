@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import ForgetPassword from "./pages/ForgetPassword";
 import Register from "./pages/Register";
 import ResetPasswod from "./pages/ResetPasswod";
+import Error from "./pages/Error";
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
           <Route path="/" element={<Login />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/reset-passowrd" element={<ResetPasswod />} />
+          <Route path="/reset-password" element={<ResetPasswod />} />
+          <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </>
