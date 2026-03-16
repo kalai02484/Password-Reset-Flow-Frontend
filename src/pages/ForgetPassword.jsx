@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast} from "react-toastify";
+import api from "../services/api";  
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
@@ -8,6 +10,18 @@ const ForgetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try{
+        const response = await api.post("/auth/forget-password", {
+          email,
+        });
+        toast.success(response.data.message);
+        setError(null);
+        navigate("/");
+    }catch(Error){
+      const errorMessage = error.response?.data?.message || error.message || "An error occurred";
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
   };
 
   return (
@@ -22,7 +36,7 @@ const ForgetPassword = () => {
             </div>
             <form className="p-4 px-4 needs-validation" novalidate>
               {error && (
-                <div className="bg-red-100 p-3 mb-4 text-red-700 rounded">
+                <div className="bg-red p-3 mb-4 text-red-700 rounded">
                   {error}
                 </div>
               )}

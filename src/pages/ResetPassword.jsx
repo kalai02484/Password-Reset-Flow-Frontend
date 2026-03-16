@@ -1,31 +1,31 @@
 import React, { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../services/api";
 
-const Login = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(false);
+  const { id, token } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const response = await api.post("/auth/login", {
-        email,
-        password,
+    try {
+      const response = await api.post(`/auth/reset-password/${id}/${token}`, {
+        password, 
       });
       toast.success(response.data.message);
       setError(null);
       navigate("/");
-    }catch(error){
-      const errorMessage = error.response?.data?.message || error.message || "An error occurred";
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message || "Unable to reset password";
       setError(errorMessage);
       toast.error(errorMessage);
     }
+    setPassword("");
   };
 
   return (
@@ -34,7 +34,9 @@ const Login = () => {
         <div className="col-12 col-md-7 col-lg-5 col-xl-4">
           <div className="card mt-5 shadow">
             <div className="card-header px-4 py-4 bg-success">
-              <h3 className="h2 text-center text-white fw-light">Login</h3>
+              <h3 className="h2 text-center text-white fw-light">
+                Reset Password
+              </h3>
             </div>
             <form className="p-4 px-4 needs-validation" novalidate>
               {error && (
@@ -43,23 +45,8 @@ const Login = () => {
                 </div>
               )}
               <div className="mb-3">
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="Enter the Email"
-                  value={email}
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
                 <label htmlFor="password" className="form-label">
-                  Password
+                  New Password
                 </label>
                 <div className="d-flex gap-3">
                   <input
@@ -70,7 +57,7 @@ const Login = () => {
                     required
                     className="form-control"
                     id="password"
-                    placeholder="Enter the Password"
+                    placeholder="Enter New Password"
                   />
                   <button
                     type="button"
@@ -86,26 +73,13 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className=" text-gray-500 mb-3 ">
-                Forgot Password?{" "}
-                <a href="/forget-password" className="text-success">
-                  Click Here
-                </a>
-              </div>
-
               <button
                 type="submit"
-                className="btn btn-success mb-4 block w-100"
+                className="btn btn-success mb-4"
                 onClick={handleSubmit}
               >
                 Submit
               </button>
-              <div className=" text-gray-500 ">
-                Don't have an account?{" "}
-                <a href="/register" className="text-success">
-                  Register
-                </a>
-              </div>
             </form>
           </div>
         </div>
@@ -114,4 +88,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

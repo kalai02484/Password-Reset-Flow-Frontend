@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../services/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -10,8 +12,25 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await api.post("/auth/register", {
+        name,
+        email,
+        password,
+      });
+      toast.success(response.data.message);
+      setError(null);
+      navigate("/");
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message || "An error occurred";
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
