@@ -43,9 +43,7 @@ const Register = () => {
             </div>
             <form className="p-4 px-4 needs-validation" novalidate>
               {error && (
-                <div className="bg-red-100 p-3 mb-4 text-red-700 rounded">
-                  {error}
-                </div>
+                <div className="alert alert-danger fade show">{error}</div>
               )}
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">

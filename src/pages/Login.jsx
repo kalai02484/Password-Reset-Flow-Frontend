@@ -13,7 +13,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       const response = await api.post("/auth/login", {
         email,
         password,
@@ -21,8 +21,9 @@ const Login = () => {
       toast.success(response.data.message);
       setError(null);
       navigate("/");
-    }catch(error){
-      const errorMessage = error.response?.data?.message || error.message || "An error occurred";
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || error.message || "An error occurred";
       setError(errorMessage);
       toast.error(errorMessage);
     }
@@ -36,11 +37,9 @@ const Login = () => {
             <div className="card-header px-4 py-4 bg-success">
               <h3 className="h2 text-center text-white fw-light">Login</h3>
             </div>
-            <form className="p-4 px-4 needs-validation" novalidate>
+            <form className="p-4 px-4 needs-validation">
               {error && (
-                <div className="bg-red-100 p-3 mb-4 text-red-700 rounded">
-                  {error}
-                </div>
+                <div className="alert alert-danger fade show">{error}</div>
               )}
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
